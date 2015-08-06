@@ -45,6 +45,7 @@
     [self.view addSubview:self.cityLabel];
     
     self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height / 3, self.view.frame.size.width, self.view.frame.size.height - self.view.frame.size.height/3)];
+    NSLog(@"%@",self.tableView);
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
