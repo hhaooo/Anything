@@ -17,14 +17,14 @@
 #import "FileTool.h"
 
 
-@interface WeatherViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,LocationToolDelegate>
+@interface WeatherViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property(nonatomic,strong) Weather *weather;
 @property(nonatomic,strong) Results *result;
 @property(nonatomic,strong) NSArray *index;
 @property(nonatomic,strong) NSArray *weatherData;
-@property(nonatomic,strong) LocationTool *locationTool;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property(nonatomic,strong) LocationTool* locationTool;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @property (nonatomic,strong)  UIImageView *backgroundImageView;
 @property(nonatomic,strong)  UILabel *cityLabel;

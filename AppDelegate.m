@@ -17,14 +17,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    self.window = [[UIWindow alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
-    UIStoryboard* mainStoryBorad = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UITabBarController* tabBarCon = [mainStoryBorad instantiateViewControllerWithIdentifier:@"tabBarController"];
-    UINavigationController* weatherNavi = [mainStoryBorad instantiateViewControllerWithIdentifier:@"weatherNavi"];
-    UIViewController* weatherCon = [mainStoryBorad instantiateViewControllerWithIdentifier:@"weatherController"];
-    self.window.rootViewController = tabBarCon;
-    [self.window makeKeyAndVisible];
-    NSLog(@"2");
+//    self.window = [[UIWindow alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
+//    UIStoryboard* mainStoryBorad = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    UITabBarController* tabBarCon = [mainStoryBorad instantiateViewControllerWithIdentifier:@"tabBarController"];
+//    UINavigationController* weatherNavi = [mainStoryBorad instantiateViewControllerWithIdentifier:@"weatherNavi"];
+//    UIViewController* weatherCon = [mainStoryBorad instantiateViewControllerWithIdentifier:@"weatherController"];
+////    UIViewController *weatherViewCont = [mainStoryBorad instantiateViewControllerWithIdentifier:@"weatherViewController"];
+//    self.window.rootViewController = tabBarCon;
+//    [self.window makeKeyAndVisible];
+//    NSLog(@"2");
     return YES;
 }
 

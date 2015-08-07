@@ -13,17 +13,25 @@
 @implementation HeaderTableViewCell
 
 - (void)awakeFromNib {
+    self.contentView.backgroundColor = [UIColor yellowColor];
     // Initialization code
 }
-
-+(instancetype)instance{
-    
-    HeaderTableViewCell *cell;
-    UIStoryboard* mainStoryBorad = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    WeatherViewController *weatherViewController = [mainStoryBorad instantiateViewControllerWithIdentifier:@"WeatherViewController"];
-    return cell;
-}
-
+//
+//
+//-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier{
+//    
+//    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+//    if (!self) {
+////        self = [[HeaderTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"123"];
+//    }
+//    return self;
+//}
+//+(instancetype)instance{
+//    
+//    HeaderTableViewCell *cell;
+////    UIStoryboard* mainStoryBorad = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    return cell;
+//}
 -(void)setWeather:(Weather *)weather{
     _weather = weather;
     if (weather) {

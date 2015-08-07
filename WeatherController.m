@@ -31,14 +31,17 @@
     self.totalPages = self.citys.count + 1;
     self.curPage = 0;
     self.viewControllers = [NSMutableArray array];
-    WeatherViewController* defaultViewController = [[WeatherViewController alloc]init];
+    UIStoryboard* mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    WeatherViewController *defaultViewController = [mainStoryBoard instantiateViewControllerWithIdentifier:@"weatherViewController"];
     defaultViewController.page = 0;
     [self.viewControllers addObject:defaultViewController];
     for (int i =0; i< self.citys.count; i++) {
-        WeatherViewController *tempVC = [[WeatherViewController alloc]init];
+        WeatherViewController *tempVC = [mainStoryBoard instantiateViewControllerWithIdentifier:@"weatherViewController"];
         tempVC.cityName = self.citys[i];
-        tempVC.page = i+1;
+        tempVC.page = i + 1;
+//        tempVC.tableView = [[UITableView alloc]init];
         [self.viewControllers addObject:tempVC];
+//        [self.view addSubview:tempVC.view];
     }
 }
 
@@ -66,16 +69,15 @@
     self.pageController.dataSource = self;
     
 //    // 定义“这本书”的尺寸
-    [[_pageController view] setFrame:[[self view] bounds]];
+    [[self.pageController view] setFrame:[[self view] bounds]];
     NSArray *viewControllerArray =[NSArray arrayWithObjects:self.viewControllers.firstObject, nil];
-    [_pageController setViewControllers:viewControllerArray
+    [self.pageController setViewControllers:viewControllerArray
                               direction:UIPageViewControllerNavigationDirectionForward
                                animated:NO
                              completion:nil];
     // 在页面上，显示UIPageViewController对象的View
     [self addChildViewController:self.pageController];
-    [[self view] addSubview:[self.pageController view]];
-
+    [self.view addSubview:self.pageController.view];
 }
 
 - (void)didReceiveMemoryWarning {

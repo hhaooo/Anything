@@ -8,7 +8,6 @@
 
 #import "WeatherViewController.h"
 
-
 @interface WeatherViewController ()
 
 @end
@@ -24,7 +23,7 @@
 }
 
 -(void)configureData{
-    
+
     Weather *cachedWeather = [FileTool readWeatherFromFileWithCity:self.cityName];
     if (cachedWeather) {
         self.result = cachedWeather.results[0];
@@ -37,23 +36,25 @@
 
 -(void)configureView{
     
-    self.cityLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height / 3)];
+    self.cityLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height + 20, self.view.frame.size.width, self.view.frame.size.height / 3)];
     self.cityLabel.textAlignment = NSTextAlignmentCenter;
     self.cityLabel.textColor = [UIColor blackColor];
     self.cityLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:75];
     self.cityLabel.adjustsFontSizeToFitWidth = YES;
+    self.cityLabel.text = @"123123123";
     [self.view addSubview:self.cityLabel];
+    self.cityLabel.backgroundColor = [UIColor blueColor];
+    NSLog(@"%@",self.cityLabel);
     
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height / 3, self.view.frame.size.width, self.view.frame.size.height - self.view.frame.size.height/3)];
+    self.tableView.frame = CGRectMake(0, self.view.frame.size.height / 3 + self.navigationController.navigationBar.frame.size.height + 20, self.view.frame.size.width, self.view.frame.size.height - self.view.frame.size.height/3);
     NSLog(@"%@",self.tableView);
+    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [UIColor colorWithWhite:1 alpha:0.2];
     self.tableView.allowsSelection = NO;
-    [self.view addSubview:self.tableView];
-    NSLog(@"45645634564");
+    NSLog(@"4456456456");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,12 +63,9 @@
 }
 
 -(UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    
-    static NSString *HeaderTableViewCellID = @"HeaderTableViewCell";
-    HeaderTableViewCell* headerCell = [tableView dequeueReusableCellWithIdentifier:HeaderTableViewCellID];
 
-    headerCell.backgroundColor = [UIColor blackColor];
-    
+    HeaderTableViewCell *headerCell = [tableView dequeueReusableCellWithIdentifier:@"HeaderTableViewCell" forIndexPath:indexPath];
+    NSLog(@"%@",headerCell);
     NSLog(@"inTableViewCell");
     
     if (indexPath.section == 0) {
@@ -77,9 +75,15 @@
         return headerCell;
     }
     
-        NSLog(@"123123213131312");
+    if (indexPath.section == 1) {
+        return  headerCell;
+    }
     
-    return headerCell;
+    if (indexPath.section == 2) {
+        return  headerCell;
+    }
+    
+    return nil;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(nonnull UITableView *)tableView{
@@ -113,7 +117,7 @@
 }
 
 -(void)loadViews{
-    
+
     UIImage *blurImage;
     if (self.weather) {
         WeatherData *todayWeatherData = self.weatherData[0];
