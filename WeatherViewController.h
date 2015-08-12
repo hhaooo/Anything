@@ -12,12 +12,19 @@
 #import "Results.h"
 #import "WeatherIndex.h"
 #import "WeatherTool.h"
-#import "HeaderTableViewCell.h"
 #import "WeatherData.h"
 #import "FileTool.h"
+#import "HeaderTableViewCell.h"
+#import "ForecastItemTableViewCell.h"
+#import "ForecastTableViewCell.h"
+#import "IndexItemTableViewCell.h"
+#import "IndexTableViewCell.h"
+#import "TitleTableViewCell.h"
+#import "HttpTool.h"
+#import "LocationTool.h"
 
 
-@interface WeatherViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface WeatherViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,LocationToolDelegate>
 
 @property(nonatomic,strong) Weather *weather;
 @property(nonatomic,strong) Results *result;

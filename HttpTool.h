@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#define kHttpTool [WZHttpTool sharedHttpTool]
+#define kHttpTool [HttpTool sharedHttpTool]
 static NSString *const kBaiduKey = @"NzqQGxUQcFnBiMX71cyQEtXi";
 
 @interface HttpTool : NSObject

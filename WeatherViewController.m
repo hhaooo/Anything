@@ -19,6 +19,11 @@
     [self configureData];
     [self configureView];
     [self loadViews];
+    if (self.cityName) {
+        [self requestWithCityInfo:self.cityName];
+    }else{
+        [self startLocation];
+    }
     // Do any additional setup after loading the view.
 }
 
@@ -31,7 +36,6 @@
         self.weatherData = self.result.weather_data;
         self.weather = cachedWeather;
     }
-    
 }
 
 -(void)configureView{
@@ -41,20 +45,17 @@
     self.cityLabel.textColor = [UIColor blackColor];
     self.cityLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:75];
     self.cityLabel.adjustsFontSizeToFitWidth = YES;
-    self.cityLabel.text = @"123123123";
+//    self.cityLabel.text = @"123123123";
     [self.view addSubview:self.cityLabel];
     self.cityLabel.backgroundColor = [UIColor blueColor];
-    NSLog(@"%@",self.cityLabel);
     
     self.tableView.frame = CGRectMake(0, self.view.frame.size.height / 3 + self.navigationController.navigationBar.frame.size.height + 20, self.view.frame.size.width, self.view.frame.size.height - self.view.frame.size.height/3);
-    NSLog(@"%@",self.tableView);
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [UIColor colorWithWhite:1 alpha:0.2];
     self.tableView.allowsSelection = NO;
-    NSLog(@"4456456456");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,24 +66,42 @@
 -(UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
 
     HeaderTableViewCell *headerCell = [tableView dequeueReusableCellWithIdentifier:@"HeaderTableViewCell" forIndexPath:indexPath];
-    NSLog(@"%@",headerCell);
-    NSLog(@"inTableViewCell");
     
+    TitleTableViewCell *titleCell = [tableView dequeueReusableCellWithIdentifier:@"TitleTableViewCell" forIndexPath:indexPath];
+    
+    ForecastTableViewCell *forecastCell = [tableView dequeueReusableCellWithIdentifier:@"ForecastTableViewCell" forIndexPath:indexPath];
+    
+    IndexTableViewCell *indexCell = [tableView dequeueReusableCellWithIdentifier:@"IndexTableViewCell" forIndexPath:indexPath];
     if (indexPath.section == 0) {
         if (self.weather) {
             headerCell.weather = self.weather;
         }
         return headerCell;
     }
-    
+
     if (indexPath.section == 1) {
-        return  headerCell;
+        if (indexPath.row == 0) {
+            titleCell.titleLabel.text =@"预报";
+            return titleCell;
+        }else{
+            if (self.weatherData) {
+                forecastCell.weatherData = self.weatherData;
+                return forecastCell;
+            }
+        }
     }
-    
-    if (indexPath.section == 2) {
-        return  headerCell;
+    else if (indexPath.section == 2){
+        if (indexPath.row == 0) {
+            titleCell.titleLabel.text =@"指数";
+            return titleCell;
+        }else{
+            if (self.index) {
+                indexCell.Index = self.index;
+                return indexCell;
+            }
+        }
     }
-    
+    NSLog(@"888888");
     return nil;
 }
 
@@ -137,17 +156,40 @@
     self.tableView.backgroundColor = [UIColor blackColor];
     [self.tableView reloadData];
     
-    NSLog(@"loadviews");
+}
+
+-(void)requestWithCityInfo:(NSString *)cityInfo{
+    [kHttpTool weatherRequestWithCityInfo:cityInfo success:^(Weather *weather) {
+        if (!self.cityName ) {
+            [FileTool writeWeatherToFile:weather withCity:nil];
+        }else{
+            [FileTool writeWeatherToFile:weather withCity:cityInfo];
+        }
+
+        self.result = weather.results[0];
+        self.index = self.result.index;
+        self.weatherData = self.result.weather_data;
+        self.weather = weather;
+        [self loadViews];
+    } failure:nil];
+    
+}
+
+-(void)startLocation{
+    self.locationTool = [[LocationTool alloc]init];
+    self.locationTool.delegate = self;
+    [self.locationTool startLocationManager];
 }
 
 -(void)locationFailed{
-    
-    
+    NSString *cityInfo = @"广州市";
+    [self requestWithCityInfo:cityInfo];
 }
 
 -(void)locationReceived:(CLLocation *)location{
     
-    
+    NSString *cityInfo = [NSString stringWithFormat:@"%f,%f",location.coordinate.longitude,location.coordinate.latitude];
+    [self requestWithCityInfo:cityInfo];
 }
 
 /*

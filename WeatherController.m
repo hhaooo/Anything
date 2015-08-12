@@ -34,14 +34,13 @@
     UIStoryboard* mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     WeatherViewController *defaultViewController = [mainStoryBoard instantiateViewControllerWithIdentifier:@"weatherViewController"];
     defaultViewController.page = 0;
+    defaultViewController.cityName = @"广州市";
     [self.viewControllers addObject:defaultViewController];
     for (int i =0; i< self.citys.count; i++) {
         WeatherViewController *tempVC = [mainStoryBoard instantiateViewControllerWithIdentifier:@"weatherViewController"];
         tempVC.cityName = self.citys[i];
         tempVC.page = i + 1;
-//        tempVC.tableView = [[UITableView alloc]init];
         [self.viewControllers addObject:tempVC];
-//        [self.view addSubview:tempVC.view];
     }
 }
 
@@ -86,13 +85,10 @@
 }
 
 -(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController{
-    NSLog(@"after");
+    NSLog(@"123123123");
     self.curPage = ((WeatherViewController *)viewController).page;
-    NSLog(@"%d",self.curPage);
     self.pageControl.currentPage = self.curPage;
-    NSLog(@"%ld",(long)self.totalPages);
     if (self.curPage < self.totalPages - 1) {
-        NSLog(@"inif");
         return self.viewControllers[self.curPage + 1];
     }else{
         return nil;
@@ -101,13 +97,10 @@
 }
 
 -(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController{
-    NSLog(@"before");
+    NSLog(@"456456456");
     self.curPage = ((WeatherViewController *)viewController).page;
-    NSLog(@"%d",self.curPage);
     self.pageControl.currentPage = self.curPage;
-    NSLog(@"%ld",(long)self.totalPages);
     if (self.curPage > 0) {
-        NSLog(@"inif");
         return self.viewControllers[self.curPage - 1];
     }else{
         return nil;
