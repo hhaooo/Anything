@@ -17,10 +17,12 @@
 @implementation WeatherController
 
 - (void)viewDidLoad {
-
+    [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     [self configureData];
     [self configureViews];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(addCity) name:@"CityChangedNotification" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(cityAdded) name:@"CityChangeNotification" object:nil];
+    
     // Do any additional setup after loading the view.
 }
 
@@ -34,9 +36,10 @@
     UIStoryboard* mainStoryBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     WeatherViewController *defaultViewController = [mainStoryBoard instantiateViewControllerWithIdentifier:@"weatherViewController"];
     defaultViewController.page = 0;
-    defaultViewController.cityName = @"广州市";
+    
     [self.viewControllers addObject:defaultViewController];
-    for (int i =0; i< self.citys.count; i++) {
+
+    for (int i = 0; i< self.citys.count; i++) {
         WeatherViewController *tempVC = [mainStoryBoard instantiateViewControllerWithIdentifier:@"weatherViewController"];
         tempVC.cityName = self.citys[i];
         tempVC.page = i + 1;
@@ -46,7 +49,7 @@
 
 -(void)configureViews{
     
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];    
     self.pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(40, 0, 40, 40)];
     self.pageControl.center = CGPointMake(self.navigationController.navigationBar.bounds.size.width / 2.0, self.navigationController.navigationBar.bounds.size.height / 2.0);
     [self.pageControl addTarget:self action:@selector(pageSelected) forControlEvents:UIControlEventTouchUpInside];
@@ -68,15 +71,15 @@
     self.pageController.dataSource = self;
     
 //    // 定义“这本书”的尺寸
-    [[self.pageController view] setFrame:[[self view] bounds]];
+    [[_pageController view] setFrame:[[self view] bounds]];
     NSArray *viewControllerArray =[NSArray arrayWithObjects:self.viewControllers.firstObject, nil];
-    [self.pageController setViewControllers:viewControllerArray
+    [_pageController setViewControllers:viewControllerArray
                               direction:UIPageViewControllerNavigationDirectionForward
                                animated:NO
                              completion:nil];
     // 在页面上，显示UIPageViewController对象的View
-    [self addChildViewController:self.pageController];
-    [self.view addSubview:self.pageController.view];
+    [self addChildViewController:_pageController];
+    [self.view addSubview:_pageController.view];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,7 +88,6 @@
 }
 
 -(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController{
-    NSLog(@"123123123");
     self.curPage = ((WeatherViewController *)viewController).page;
     self.pageControl.currentPage = self.curPage;
     if (self.curPage < self.totalPages - 1) {
@@ -97,7 +99,6 @@
 }
 
 -(UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController{
-    NSLog(@"456456456");
     self.curPage = ((WeatherViewController *)viewController).page;
     self.pageControl.currentPage = self.curPage;
     if (self.curPage > 0) {
@@ -114,14 +115,23 @@
     addCityVC.displayType = kDisplayProvince;
     UINavigationController *naviVC = [[UINavigationController alloc]initWithRootViewController:addCityVC];
     [self presentViewController:naviVC animated:YES completion:nil];
+    
 }
 -(void)editCity{
     
     
 }
 
+-(void)cityAdded{
+    [self configureData];
+    self.pageControl.numberOfPages = self.totalPages;
+    self.pageControl.currentPage = 0;
+    NSArray *viewControllers =[NSArray arrayWithObjects:self.viewControllers.firstObject, nil];
+    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+}
+
 -(void)dealloc{
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"CityChangedNotification" object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"CityChangeNotification" object:nil];
 }
 
 /*

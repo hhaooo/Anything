@@ -40,22 +40,32 @@
 
 -(void)configureView{
     
-    self.cityLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height + 20, self.view.frame.size.width, self.view.frame.size.height / 3)];
+    CGRect frame =  self.view.bounds;
+    self.backgroundImageView = [[UIImageView alloc]initWithFrame:frame];
+    [self.view addSubview:self.backgroundImageView];
+    [self.view setBackgroundColor:[UIColor greenColor]];
+    self.cityLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height / 3)];
     self.cityLabel.textAlignment = NSTextAlignmentCenter;
     self.cityLabel.textColor = [UIColor blackColor];
     self.cityLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:75];
     self.cityLabel.adjustsFontSizeToFitWidth = YES;
-//    self.cityLabel.text = @"123123123";
-    [self.view addSubview:self.cityLabel];
     self.cityLabel.backgroundColor = [UIColor blueColor];
+    [self.view addSubview:self.cityLabel];
+//    self.tableView.tableHeaderView = self.cityLabel;
     
-    self.tableView.frame = CGRectMake(0, self.view.frame.size.height / 3 + self.navigationController.navigationBar.frame.size.height + 20, self.view.frame.size.width, self.view.frame.size.height - self.view.frame.size.height/3);
-    
+    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width,self.view.frame.size.height - self.view.frame.size.height /3);
+    self.tableView.backgroundColor = [UIColor redColor];
+//    NSLog(@"self.view.size.height == %@",self.view);
+//    NSLog(@"city.name == %@",self.tableView);
+//    NSLog(@"city.name == %@",self.cityName);
+//    NSLog(@"设置框架");
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [UIColor colorWithWhite:1 alpha:0.2];
     self.tableView.allowsSelection = NO;
+//    NSLog(@"self.view === %@",self.view);
+    [self.view addSubview:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,8 +96,9 @@
         }else{
             if (self.weatherData) {
                 forecastCell.weatherData = self.weatherData;
-                return forecastCell;
+//                return forecastCell;
             }
+                return forecastCell;
         }
     }
     else if (indexPath.section == 2){
@@ -97,11 +108,11 @@
         }else{
             if (self.index) {
                 indexCell.Index = self.index;
-                return indexCell;
+//                return indexCell;
             }
+            return indexCell;
         }
     }
-    NSLog(@"888888");
     return nil;
 }
 

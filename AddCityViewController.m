@@ -116,7 +116,7 @@
     }else if(self.displayType == kDisplayCity){
         NSDictionary* city = self.citys[indexPath.row];
         self.selectedCity = [city objectForKey:@"name"];
-        [self.tableView reloadData];
+        [tableView reloadData];
     }
 }
 
